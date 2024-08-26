@@ -7,7 +7,7 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 from pinecone import ServerlessSpec
 from groq import Groq
 
-# loads environemnt variables
+# loads environment variables
 load_dotenv()
 
 class RAGPipeline():
@@ -46,17 +46,22 @@ class RAGPipeline():
             include_metadata=True 
         )
         # extracting the context from DB response
-        context = "\n".join([
-            f"Title: {item['metadata']['title']}\n"
-            f"Genre: {item['metadata']['genre']}\n"
-            f"Box Office: {item['metadata']['box-office']}\n"
-            f"Summary: {item['metadata']['summary']}\n"
-            for item in response['matches']
-        ])
+        # extracting the context from DB response
+        context = ""
+        for item in response["matches"]:
+            title = str(item['metadata']['title'])
+            genre = str(item['metadata']['genre'])
+            box_office = float(item['metadata']['box-office'])  # Ensure it's a Python float
+            summary = str(item['metadata']['summary'])
+
+            context += f"Title: {title}, Genre: {genre}, Box Office: {box_office}, Summary: {summary}\n"
+        
         return context
 
     def generate_response(self, user_query, context):
         # calling groq model
+        context = str(context)
+        print("Context:", context)
         chat_completion = self.client.chat.completions.create(
             messages=[
                 {
@@ -76,10 +81,22 @@ class RAGPipeline():
         )
         return chat_completion.choices[0].message.content
 
-    def run_pipeline(self, user_query):
+    def run_pipeline(self, user_query, state_context):
         embedded_query = self.text_to_embedding(user_query)
-        context = self.retrieve_context(embedded_query)
-        response = self.generate_response(embedded_query, context)
+        context = self.retrieve_context(embedded_query) + " " + state_context
+        response = self.generate_response(user_query, context)
         return response
 
 
+
+rag_pipeline = RAGPipeline()
+print(rag_pipeline.run_pipeline("find me a good movie", ""))
+
+state_context = ""
+user_query = None
+while user_query:
+    user_query = str(input("Ask a question: "))
+    state_context += " " + user_query
+    response = rag_pipeline.run_pipeline(user_query, state_context)
+    state_context += " " + response
+    print(response)

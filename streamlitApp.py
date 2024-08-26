@@ -5,6 +5,8 @@ rag_pipeline = RAGPipeline()
 
 st.title("LLM app")
 
+state_context = ""
+
 user_query = st.text_input("Enter your query:")
 
 if user_query:
