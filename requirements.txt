@@ -1,6 +1,7 @@
-groq==0.9.0
+groq==0.10.0
+pdfplumber==0.11.4
 pinecone==5.0.1
 python-dotenv==1.0.1
-transformers
-torch
-streamlit
+streamlit==1.28.2
+torch==2.0.1
+transformers==4.44.2

@@ -90,10 +90,11 @@ class RAGPipeline():
 
 
 rag_pipeline = RAGPipeline()
-print(rag_pipeline.run_pipeline("find me a good movie", ""))
 
+
+# Type a query, LLM will have all previous context, to end the conversation enter an empty query
 state_context = ""
-user_query = None
+user_query = "Buffer"
 while user_query:
     user_query = str(input("Ask a question: "))
     state_context += " " + user_query
