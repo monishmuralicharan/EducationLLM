@@ -87,7 +87,7 @@ class RAGPipeline():
         response = self.generate_response(user_query, context)
         return response
 
-
+''' Testing the pipeline
 
 rag_pipeline = RAGPipeline()
 
@@ -101,3 +101,4 @@ while user_query:
     response = rag_pipeline.run_pipeline(user_query, state_context)
     state_context += " " + response
     print(response)
+'''
