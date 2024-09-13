@@ -21,7 +21,7 @@ import pinecone
 import os
 
 # Initialize Pinecone and RoBERTa
-pinecone.init(api_key=os.environ.get("8617f8ef-56a3-44d5-a50c-bc5afe9df4f2"))
+pinecone.init(api_key=os.environ.get("PINECONE_API_KEY"))
 index_name = "your-pinecone-index"
 index = pinecone.Index(index_name)
 
