@@ -49,7 +49,7 @@ def push_to_pinecone(embedding, metadata):
     index.upsert(vectors=[(metadata['id'], embedding)], metadata=metadata)
 
 # Example usage
-pdf_path = "your-document.pdf"
+pdf_path = "CS251Homework2Solution.pdf"
 text = extract_text_from_pdf(pdf_path)
 embedding = text_to_embedding(text)
 
