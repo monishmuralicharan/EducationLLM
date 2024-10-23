@@ -1,20 +1,4 @@
-#pdf plumber
-'''
-import pdfplumber
-
-# Example of extracting text using pdfplumber
-with pdfplumber.open("example.pdf") as pdf:
-    full_text = ""
-    for page in pdf.pages:
-        full_text += page.extract_text()
-
-print(full_text)
-'''
-
-# Use file text and BERT model to convert to vector embeddings in pinecone
-
-
-import pdfplumber
+import pypdf
 from transformers import RobertaTokenizer, RobertaModel
 import torch
 import pinecone
@@ -28,11 +12,13 @@ index = pinecone.Index(index_name)
 tokenizer = RobertaTokenizer.from_pretrained('roberta-large')
 model = RobertaModel.from_pretrained('roberta-large')
 
-# Function to extract text from a PDF using pdfplumber
+# Function to extract text from a PDF using pypdf
 def extract_text_from_pdf(pdf_path):
     text = ""
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
+    with open(pdf_path, "rb") as file:
+        reader = pypdf.PdfReader(file)
+        for page_num in range(len(reader.pages)):
+            page = reader.pages[page_num]
             text += page.extract_text()
     return text
 
@@ -63,10 +49,3 @@ metadata = {
 
 # Push the embedding and metadata to Pinecone
 push_to_pinecone(embedding, metadata)
-
-
-'''
-pc = Pinecone(
-   api_key=os.environ.get("PINECONE_API_KEY")
-)
-'''
