@@ -6,7 +6,7 @@ import os
 
 # Initialize Pinecone and RoBERTa
 pinecone.init(api_key=os.environ.get("PINECONE_API_KEY"))
-index_name = "your-pinecone-index"
+index_name = "pdf-embeddings"
 index = pinecone.Index(index_name)
 
 tokenizer = RobertaTokenizer.from_pretrained('roberta-large')
@@ -41,10 +41,10 @@ embedding = text_to_embedding(text)
 
 # Define metadata for your PDF (e.g., title, author, etc.)
 metadata = {
-    "id": "unique-id-for-this-document",
-    "title": "Document Title",
-    "author": "Author Name",
-    "category": "Some Category"
+    "id": "Homework2-sol",
+    "title": "CS251Homework2Solution",
+    "author": "ANDRES BOSADA",
+    "category": "DSA Solution"
 }
 
 # Push the embedding and metadata to Pinecone
